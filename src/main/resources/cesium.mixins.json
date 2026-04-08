@@ -7,7 +7,6 @@
     "network.ClientConnectionAccessor",
     "network.PacketEncoderMixin",
     "network.PacketDecoderMixin",
-    "network.PacketBundlerMixin",
     "network.ServerPingerMixin",
     "network.ChannelInitializerMixin",
     "client.MinecraftClientMixin",
