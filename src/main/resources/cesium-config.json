@@ -1,0 +1,120 @@
+{
+  "version": 1,
+  "profile": "BALANCED",
+
+  "network": {
+    "flush_consolidation": {
+      "enabled": true,
+      "explicit_flush_after_flushes": 256
+    },
+    "compression": {
+      "enabled": true,
+      "algorithm": "AUTO",
+      "adaptive": true,
+      "dictionary_sharing": true,
+      "small_packet_threshold": 128,
+      "prefer_native": true
+    },
+    "buffer": {
+      "use_direct_buffers": true,
+      "pool_arenas": "AUTO",
+      "cache_trim_interval_seconds": 30
+    },
+    "tcp": {
+      "tcp_nodelay": true,
+      "ip_tos": 24,
+      "auto_tune_buffers": true,
+      "keepalive": true
+    },
+    "native_transport": {
+      "enabled": true,
+      "prefer_io_uring": true
+    }
+  },
+
+  "dns": {
+    "async_resolve": true,
+    "cache_enabled": true,
+    "cache_max_entries": 512,
+    "cache_min_ttl_seconds": 60,
+    "disk_persistence": true,
+    "happy_eyeballs": true,
+    "custom_dns_servers": [],
+    "dns_over_https": false
+  },
+
+  "packets": {
+    "priority_queue": true,
+    "coalescing": {
+      "enabled": true,
+      "window_ms": 5
+    },
+    "throttling": {
+      "enabled": true,
+      "min_position_interval_ms": 50,
+      "delta_threshold": 0.001
+    }
+  },
+
+  "prediction": {
+    "enhanced_movement_prediction": true,
+    "correction_speed": 0.3,
+    "error_threshold_blocks": 0.5,
+    "spline_interpolation": true,
+    "adaptive_interpolation_delay": true,
+    "jitter_buffer": {
+      "enabled": true,
+      "mode": "ADAPTIVE",
+      "min_size": 1,
+      "max_size": 5
+    }
+  },
+
+  "connection": {
+    "auto_reconnect": false,
+    "reconnect_max_attempts": 5,
+    "reconnect_backoff_base_ms": 1000,
+    "reconnect_backoff_max_ms": 30000,
+    "timeout_adaptive": true,
+    "keepalive_priority": true
+  },
+
+  "monitoring": {
+    "collect_statistics": true,
+    "detailed_packet_stats": false,
+    "history_duration_minutes": 5
+  },
+
+  "hud": {
+    "enabled": true,
+    "mode": "MINIMAL",
+    "position": "TOP_LEFT",
+    "show_ping_graph": false,
+    "graph_duration_seconds": 60,
+    "color_scheme": "AUTO"
+  },
+
+  "compatibility": {
+    "disable_on_krypton_detected": true,
+    "safe_mode": false,
+    "disabled_mixins": []
+  },
+
+  "mobile": {
+    "auto_detect": true,
+    "force_mobile_profile": false,
+    "battery_aware": true,
+    "battery_low_threshold_percent": 20,
+    "battery_critical_threshold_percent": 10,
+    "memory_guard": true,
+    "touch_hud_scale": 1.5,
+    "show_network_type": true,
+    "show_battery_status": true,
+    "show_ram_usage": true,
+    "auto_reconnect_on_network_change": true,
+    "aggressive_jitter_buffer": true,
+    "disable_native_libraries": true,
+    "compression_cpu_limit": "LOW",
+    "reduce_statistics_history": true
+  }
+}

@@ -1,0 +1,24 @@
+{
+  "required": true,
+  "package": "net.cesium.mixin",
+  "compatibilityLevel": "JAVA_21",
+  "client": [
+    "network.ClientConnectionMixin",
+    "network.ClientConnectionAccessor",
+    "network.NetworkStateMixin",
+    "network.PacketEncoderMixin",
+    "network.PacketDecoderMixin",
+    "network.PacketBundlerMixin",
+    "network.ServerPingerMixin",
+    "network.ChannelInitializerMixin",
+    "client.MinecraftClientMixin",
+    "client.ClientPlayNetworkHandlerMixin",
+    "client.MultiplayerScreenMixin",
+    "client.MultiplayerScreenAccessor",
+    "entity.EntityTrackerMixin",
+    "entity.PlayerEntityMixin"
+  ],
+  "injectors": {
+    "defaultRequire": 1
+  }
+}

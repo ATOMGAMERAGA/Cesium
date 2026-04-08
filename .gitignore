@@ -1,0 +1,37 @@
+# Gradle
+.gradle/
+build/
+out/
+!gradle/wrapper/gradle-wrapper.jar
+
+# IntelliJ IDEA
+.idea/
+*.iml
+*.iws
+*.ipr
+
+# Eclipse
+.classpath
+.project
+.settings/
+
+# VS Code
+.vscode/
+
+# macOS
+.DS_Store
+
+# Loom cache
+.loom-cache/
+remappedSources/
+
+# Fabric Loom generated
+src/main/generated/
+
+# Compiled native binaries (build from source)
+src/main/native/**/target/
+
+# Local config overrides
+run/
+logs/
+crash-reports/

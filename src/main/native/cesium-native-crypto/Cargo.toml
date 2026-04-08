@@ -1,0 +1,18 @@
+[package]
+name = "cesium-native-crypto"
+version = "1.0.0"
+edition = "2021"
+
+[lib]
+name = "cesium_crypto"
+crate-type = ["cdylib"]
+
+[dependencies]
+xxhash-rust = { version = "0.8", features = ["xxh3", "xxh64"] }
+jni = "0.21"
+
+[profile.release]
+opt-level = 3
+lto = true
+codegen-units = 1
+strip = true
