@@ -76,14 +76,9 @@ jobs:
           COMMIT_SHA: ${{ github.sha }}
         run: |
           COMMIT_MSG=$(git log -1 --pretty=%s)
+          NOTES=$(printf '**Alpha Snapshot** — automated build from `main`\n\nCommit: `%s` — %s\n\n⚠️ Bu sürüm geliştirme aşamasındadır. Stabil değildir.\n\n**Kurulum:** `.minecraft/mods/` klasörüne kopyala (Fabric 1.21.4 gerekli)' "${COMMIT_SHA:0:7}" "$COMMIT_MSG")
           gh release create "$SNAP_TAG" \
             build/libs/cesium-*.jar \
             --prerelease \
             --title "Cesium $SNAP_TAG" \
-            --notes "**Alpha Snapshot** — automated build from \`main\`
-
-Commit: \`${COMMIT_SHA:0:7}\` — $COMMIT_MSG
-
-> ⚠️ Bu sürüm geliştirme aşamasındadır. Stabil değildir.
-
-**Kurulum:** \`.minecraft/mods/\` klasörüne kopyala (Fabric 1.21.4 gerekli)"
+            --notes "$NOTES"
