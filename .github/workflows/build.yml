@@ -1,16 +1,15 @@
-name: Build
+name: Build & Snapshot Release
 
 on:
   push:
     branches: [ main, develop ]
   pull_request:
     branches: [ main ]
-  release:
-    types: [ published ]
 
 jobs:
   build:
     runs-on: ubuntu-latest
+
     steps:
       - name: Checkout
         uses: actions/checkout@v4
@@ -34,34 +33,57 @@ jobs:
       - name: Grant execute permission
         run: chmod +x gradlew
 
+      - name: Compute snapshot tag
+        id: tag
+        run: |
+          BASE=$(grep '^mod_version' gradle.properties | cut -d= -f2 | tr -d ' ')
+          SHA=$(echo "$GITHUB_SHA" | cut -c1-7)
+          RUN=${{ github.run_number }}
+          echo "tag=${BASE}-alpha.${RUN}+${SHA}" >> "$GITHUB_OUTPUT"
+          echo "jar_name=cesium-${BASE}-alpha.${RUN}+${SHA}.jar" >> "$GITHUB_OUTPUT"
+
       - name: Build
         run: ./gradlew build --no-daemon
+
+      - name: Rename jar to snapshot name
+        run: |
+          BASE=$(grep '^mod_version' gradle.properties | cut -d= -f2 | tr -d ' ')
+          mv build/libs/cesium-${BASE}.jar build/libs/${{ steps.tag.outputs.jar_name }} || true
 
       - name: Upload artifact
         uses: actions/upload-artifact@v4
         with:
-          name: cesium-${{ github.sha }}
+          name: ${{ steps.tag.outputs.tag }}
           path: build/libs/cesium-*.jar
           if-no-files-found: error
 
-      # Publish to Modrinth & CurseForge on release
-      - name: Publish (Modrinth + CurseForge)
-        if: github.event_name == 'release'
+      # Create a pre-release on every push to main
+      - name: Delete existing snapshot tag (if any)
+        if: github.ref == 'refs/heads/main' && github.event_name == 'push'
         env:
-          RELEASE_TAG: ${{ github.event.release.tag_name }}
-          RELEASE_BODY: ${{ github.event.release.body }}
-        uses: Kir-Antipov/mc-publish@v3.3
-        with:
-          modrinth-id: ${{ secrets.MODRINTH_PROJECT_ID }}
-          modrinth-token: ${{ secrets.MODRINTH_TOKEN }}
-          curseforge-id: ${{ secrets.CURSEFORGE_PROJECT_ID }}
-          curseforge-token: ${{ secrets.CURSEFORGE_TOKEN }}
-          files: build/libs/cesium-*.jar
-          name: "Cesium ${{ env.RELEASE_TAG }}"
-          version: ${{ env.RELEASE_TAG }}
-          version-type: release
-          changelog: ${{ env.RELEASE_BODY }}
-          game-versions: |
-            1.21.4
-          loaders: |
-            fabric
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          SNAP_TAG: ${{ steps.tag.outputs.tag }}
+        run: |
+          gh release delete "$SNAP_TAG" --yes 2>/dev/null || true
+          git push origin ":refs/tags/$SNAP_TAG" 2>/dev/null || true
+
+      - name: Create GitHub pre-release (alpha snapshot)
+        if: github.ref == 'refs/heads/main' && github.event_name == 'push'
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          SNAP_TAG: ${{ steps.tag.outputs.tag }}
+          SNAP_JAR: ${{ steps.tag.outputs.jar_name }}
+          COMMIT_SHA: ${{ github.sha }}
+        run: |
+          COMMIT_MSG=$(git log -1 --pretty=%s)
+          gh release create "$SNAP_TAG" \
+            build/libs/cesium-*.jar \
+            --prerelease \
+            --title "Cesium $SNAP_TAG" \
+            --notes "**Alpha Snapshot** — automated build from \`main\`
+
+Commit: \`${COMMIT_SHA:0:7}\` — $COMMIT_MSG
+
+> ⚠️ Bu sürüm geliştirme aşamasındadır. Stabil değildir.
+
+**Kurulum:** \`.minecraft/mods/\` klasörüne kopyala (Fabric 1.21.4 gerekli)"
