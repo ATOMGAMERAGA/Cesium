@@ -5,7 +5,6 @@
   "client": [
     "network.ClientConnectionMixin",
     "network.ClientConnectionAccessor",
-    "network.NetworkStateMixin",
     "network.PacketEncoderMixin",
     "network.PacketDecoderMixin",
     "network.PacketBundlerMixin",
