@@ -1,5 +1,6 @@
 {
   "cesium.title": "Cesium",
+
   "cesium.profile.conservative": "Muhafazakar",
   "cesium.profile.balanced": "Dengeli",
   "cesium.profile.aggressive": "Agresif",
@@ -16,20 +17,26 @@
   "cesium.hud.buffer": "Tampon",
 
   "cesium.config.title": "Cesium Ayarları",
-  "cesium.config.profile": "Optimizasyon Profili",
+  "cesium.config.profile": "Profil",
   "cesium.config.profile.tooltip": "Optimizasyon agresiflik seviyesini seçin",
-  "cesium.config.hud.enabled": "HUD Göster",
+  "cesium.config.hud.enabled": "HUD",
   "cesium.config.hud.mode": "HUD Modu",
   "cesium.config.flush_consolidation": "Flush Konsolidasyonu",
   "cesium.config.flush_consolidation.tooltip": "Birden fazla Netty flush çağrısını tek sistem çağrısına indirger",
-  "cesium.config.compression": "Adaptif Sıkıştırma",
-  "cesium.config.compression.tooltip": "LZ4 ve Zstandard kullanarak paketleri daha hızlı ve verimli sıkıştırır",
-  "cesium.config.happy_eyeballs": "Happy Eyeballs (RFC 8305)",
-  "cesium.config.happy_eyeballs.tooltip": "Daha hızlı bağlantı için IPv4 ve IPv6 yarışını aynı anda başlatır",
+  "cesium.config.compression": "Sıkıştırma",
+  "cesium.config.compression.tooltip": "LZ4 ve Zstandard ile daha hızlı paket sıkıştırma",
+  "cesium.config.happy_eyeballs": "Happy Eyeballs",
+  "cesium.config.happy_eyeballs.tooltip": "Daha hızlı bağlantı için IPv4 ve IPv6 yarışını aynı anda başlatır (RFC 8305)",
   "cesium.config.jitter_buffer": "Jitter Tamponu",
   "cesium.config.jitter_buffer.tooltip": "Ağ titremesini absorbe ederek bağlantı hissini stabilize eder",
   "cesium.config.spline_interpolation": "Spline İnterpolasyon",
   "cesium.config.spline_interpolation.tooltip": "Catmull-Rom eğrileri ile entity hareketlerini yumuşatır",
   "cesium.config.native_transport": "Native Transport",
-  "cesium.config.native_transport.tooltip": "Linux/macOS üzerinde daha düşük sistem çağrısı için Epoll/KQueue/io_uring kullanır"
+  "cesium.config.native_transport.tooltip": "Linux/macOS üzerinde daha düşük sistem çağrısı için Epoll/KQueue/io_uring kullanır",
+
+  "cesium.command.hud_enabled": "HUD etkinleştirildi",
+  "cesium.command.hud_disabled": "HUD devre dışı bırakıldı",
+  "cesium.command.no_stats": "Ağ istatistiği mevcut değil.",
+  "cesium.command.config_reloaded": "Yapılandırma yeniden yüklendi.",
+  "cesium.command.unknown_profile": "Bilinmeyen profil. Kullanım: CONSERVATIVE, BALANCED, AGGRESSIVE, MOBILE, CUSTOM"
 }

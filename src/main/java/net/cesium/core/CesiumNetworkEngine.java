@@ -13,7 +13,9 @@ import net.cesium.netty.transport.NativeCompressionLoader;
 import net.cesium.netty.transport.NativeTransportLoader;
 import net.cesium.packet.PacketCoalescer;
 import net.cesium.packet.PacketPriorityQueue;
+import net.cesium.prediction.JitterBuffer;
 import net.cesium.prediction.LatencyCompensator;
+import net.cesium.prediction.MovementPredictor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -38,6 +40,8 @@ public class CesiumNetworkEngine {
     private PacketPriorityQueue packetPriorityQueue;
     private PacketCoalescer packetCoalescer;
     private LatencyCompensator latencyCompensator;
+    private MovementPredictor movementPredictor;
+    private JitterBuffer jitterBuffer;
     private ConnectionStabilizer connectionStabilizer;
     private TimeoutOptimizer timeoutOptimizer;
 
@@ -118,6 +122,12 @@ public class CesiumNetworkEngine {
 
     private void initPrediction() {
         latencyCompensator = new LatencyCompensator();
+        if (config.isEnhancedMovementPrediction()) {
+            movementPredictor = new MovementPredictor(config);
+        }
+        if (config.isJitterBufferEnabled()) {
+            jitterBuffer = new JitterBuffer(config);
+        }
     }
 
     private void initConnectionManagement() {
@@ -147,6 +157,8 @@ public class CesiumNetworkEngine {
     public PacketPriorityQueue getPacketPriorityQueue() { return packetPriorityQueue; }
     public PacketCoalescer getPacketCoalescer() { return packetCoalescer; }
     public LatencyCompensator getLatencyCompensator() { return latencyCompensator; }
+    public MovementPredictor getMovementPredictor() { return movementPredictor; }
+    public JitterBuffer getJitterBuffer() { return jitterBuffer; }
     public ConnectionStabilizer getConnectionStabilizer() { return connectionStabilizer; }
     public TimeoutOptimizer getTimeoutOptimizer() { return timeoutOptimizer; }
     public boolean isInitialized() { return initialized; }
