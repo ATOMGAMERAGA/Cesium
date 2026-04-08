@@ -65,7 +65,7 @@ public class NativeCompressionLoader {
                 zstdAvailable = true;
                 return;
             }
-        } catch (Exception e) {
+        } catch (Throwable e) {
             LOGGER.debug("[Cesium] Netty native Zstd unavailable: {}", e.getMessage());
         }
         tryLoadZstdJni();
@@ -76,8 +76,10 @@ public class NativeCompressionLoader {
             Class.forName("com.github.luben.zstd.Zstd");
             zstdBackend = CompressionBackend.ZSTD_JNI;
             zstdAvailable = true;
-        } catch (ClassNotFoundException e) {
-            LOGGER.debug("[Cesium] zstd-jni unavailable, falling back to zlib");
+        } catch (Throwable e) {
+            // UnsatisfiedLinkError on Android (libpthread.so.0 missing) is an Error,
+            // not an Exception — catch Throwable to handle both cases gracefully.
+            LOGGER.debug("[Cesium] zstd-jni unavailable ({}), falling back to zlib", e.getMessage());
             zstdBackend = CompressionBackend.ZLIB_DEFLATER;
             zstdAvailable = false;
         }
